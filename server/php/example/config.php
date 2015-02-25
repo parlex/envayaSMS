@@ -7,8 +7,8 @@ ini_set('display_errors','0');
  * otherwise example/www/gateway.php will return an "Invalid request signature" error.
  */
 
-$PASSWORD = 'rosebud';
-
+$PASSWORD = 'test123';
+$PARLEX_SERVER = "37.191.212.173";
 /*
  * example/send_sms.php uses the local file system to queue outgoing messages
  * in this directory.
@@ -24,10 +24,10 @@ $OUTGOING_DIR_NAME = __DIR__."/outgoing_sms";
  */
 
 $AMQP_SETTINGS = array(
-    'host' => 'localhost',
+    'host' => $PARLEX_SERVER ,
     'port' => 5672,
-    'user' => 'guest',
-    'password' => 'guest',
+    'user' => 'premer',
+    'password' => 'test123',
     'vhost' => '/',
     'queue_name' => "envayasms"
 );
