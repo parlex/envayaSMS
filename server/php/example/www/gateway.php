@@ -53,7 +53,6 @@ switch ($action->type)
         }                       
         
         $reply = new EnvayaSMS_OutgoingMessage();
-        //$reply->message = "You said: {$action->message}";
 		exec("java Updater {$action->message}", $output);
 		$reply->message = $output;
     
