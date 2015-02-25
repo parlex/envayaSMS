@@ -24,10 +24,10 @@ $OUTGOING_DIR_NAME = __DIR__."/outgoing_sms";
  */
 
 $AMQP_SETTINGS = array(
-    'host' => $PARLEX_SERVER ,
-    'port' => 5672,
-    'user' => 'premer',
-    'password' => 'test123',
-    'vhost' => '/',
-    'queue_name' => "envayasms"
+		'host' => $PARLEX_SERVER ,
+		'port' => 5672,
+		'user' => 'premer',
+		'password' => 'test123',
+		'vhost' => '/',
+		'queue_name' => "envayasms"
 );
