@@ -53,8 +53,11 @@ switch ($action->type)
 		}                       
 
 		$reply = new EnvayaSMS_OutgoingMessage();
-		exec("java Updater {$action->message}", $output);
-		$reply->message = $output;
+                $msg = $reply->message;
+                $num = $msg->to;
+
+		exec("python smsToDhis2Event.py '{$action->message}' '{$num}'", $output);
+		$reply->message = "hei"; /* $output; */
 
 
 		error_log("Sending reply: {$reply->message}");
