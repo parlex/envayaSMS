@@ -95,9 +95,9 @@ def buildJson(eventData, dataElements):
    storeValues.write(json.dumps(data))
    storeValues.close()
    
-   os.system("curl -d @testPost.json 'https://apps.dhis2.org/dev/api/events' -H 'Content-Type:application/json' -u admin:district -v")
+   os.system("curl -d @testPost.json 'https://apps.dhis2.org/dev/api/events' -H 'Content-Type:application/json' -u admin:district -v >> output.txt")
 
-   os.remove('testPost.json')
+   #os.remove('testPost.json')
 
 
 processMessage(message)
