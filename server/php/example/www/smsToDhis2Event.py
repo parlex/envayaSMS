@@ -19,11 +19,11 @@ def allFilesCreated():
     return len(os.listdir(phoneNum))
 
 def concatFiles(amount):
-   with open(phoneNum + '/output.txt', 'w+') as outfile:
-       for fname in range(1, amount+1):
-           with open(phoneNum + '/' + str(fname)) as infile:
-               outfile.write(infile.read())
-   parseMessage(open(phoneNum + '/output.txt', 'r+').read())
+   message = ''
+   for fname in range(1, amount + 1):
+      with open(phoneNum + '/' + str(fname)) as infile:
+         message += infile.read()
+   parseMessage(message)
 
 def appendMessage(msg, num):
    if not os.path.exists(phoneNum):
@@ -59,12 +59,10 @@ def getValueFromNumber(dataID, number):
       os.system(cmd)
       
       with open(saveAs) as data_file:
-         data = json.load(data_file)
-         
+         data = json.load(data_file) 
       os.remove(saveAs)
 
-   return data['options'][number]['name']
-
+      return (data['options'][int(number)]['name'])
 
 def buildJson(eventData, dataElements):
    data = {}
@@ -78,7 +76,7 @@ def buildJson(eventData, dataElements):
    data['program'] = eventData['p'] 
 
    for key in dataElements:
-      value = getValueFromNumber(key, number)
+      value = getValueFromNumber(key, str(dataElements[key]))
       if value is None:
          tmp['value'] = dataElements[key]
       else:
@@ -97,7 +95,7 @@ def buildJson(eventData, dataElements):
    storeValues.write(json.dumps(data))
    storeValues.close()
    
-   os.system("curl -d @testPost.json 'https://apps.dhis2.org/dev/api/events' -H 'Content-Type:application/json' -u android:Android123 -v")
+   os.system("curl -d @testPost.json 'https://apps.dhis2.org/dev/api/events' -H 'Content-Type:application/json' -u admin:district -v")
 
    os.remove('testPost.json')
 
