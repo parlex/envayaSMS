@@ -1,6 +1,7 @@
-import os, json, sys
+import os, json, sys, urllib2, urllib, cookielib
 
 message = sys.argv[1]
+baseUrl = 'https://apps.dhis2.org/dev/api/'
 
 #TODO: make this the phoneNumber that is sending the text
 
@@ -38,19 +39,50 @@ def parseMessage(msg):
 
    buildJson(smsDict, dataElms)
 
+def getValueFromNumber(dataID, number):
+   saveAs = 'temp.json'
+   apiType = 'dataElements/'
+   login = " -u admin:district -v >> "
+
+   cmd =  "curl '" + baseUrl + apiType + dataID + ".json" + "'" + login + saveAs
+   os.system(cmd)
+   
+   with open(saveAs) as data_file:
+      data = json.load(data_file)
+
+   os.remove(saveAs)
+   
+   if not data.get('optionSet'):
+     return None
+   else:
+      cmd =  "curl '" + data['optionSet']['href']+ '.json' + "'" + login + saveAs
+      os.system(cmd)
+      
+      with open(saveAs) as data_file:
+         data = json.load(data_file)
+         
+      os.remove(saveAs)
+
+   return data['options'][number]['name']
+
+
 def buildJson(eventData, dataElements):
    data = {}
    tmp = {}
    dataVals = []
 
    data['orgUnit'] = eventData['o']
-   data['eventDate'] = '2019-05-17' 
+   data['eventDate'] = eventData['eD'] 
    data['status'] = 'COMPLETED' 
    data['storedBy'] = eventData['o'] 
    data['program'] = eventData['p'] 
 
    for key in dataElements:
-      tmp['value'] = dataElements[key]
+      value = getValueFromNumber(key, number)
+      if value is None:
+         tmp['value'] = dataElements[key]
+      else:
+         tmp['value'] = value
       tmp['dataElement'] = key
       tmp['providedElsewhere'] = 'false'
       dataVals.append(tmp)
